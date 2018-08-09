@@ -1,0 +1,44 @@
+ES安装
+1.下载，解压:
+https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.5.0.zip
+2.启动：运行./bin/elasticsearch
+3.测试: http://localhost:9200
+[参考连接]https://www.elastic.co/downloads/elasticsearch
+
+kibana安装
+1.下载,解压:
+https://artifacts.elastic.co/downloads/kibana/kibana-5.5.0-linux-x86_64.tar.gz
+2.编辑config/kibana.yml
+设置 elasticsearch.url: "http://localhost:9200"
+3.启动：运行./bin/kibana
+4.测试: http://localhost:5601
+[参考链接]https://www.elastic.co/downloads/kibana
+
+x-pack安装
+1.ES安装x-pack
+执行 bin/elasticsearch-plugin install x-pack
+2.启动ES  bin/elasticsearch
+3.kibana安装x-pack
+执行 bin/kibana-plugin install x-pack
+4.启动kibana  bin/kibana
+5.访问http://localhost:5601/
+初始用户名elastic,密码changeme
+[参考链接]https://www.elastic.co/de/downloads/x-pack
+
+ik 安装
+1.下载,解压
+https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.5.0/elasticsearch-analysis-ik-5.5.0.zip
+2.
+执行  cp -r elasticsearch-analysis-ik-5.5.0  elasticsearch-5.5.0/plugins/ik
+3.重启ES
+[参考链接]https://github.com/medcl/elasticsearch-analysis-ik
+
+python elasticsearch安装
+sudo pip install elasticsearch
+使用: from elasticsearch import Elasticsearch
+
+
+
+
+
+

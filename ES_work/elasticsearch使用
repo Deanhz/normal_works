@@ -1,0 +1,135 @@
+ElasticSearch使用
+参考链接：https://es.xiaoleilu.com/
+https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
+
+Kibana下使用
+进入http://localhost:5601
+默认用户名elastic,密码changeme
+进入Dev Tools,在左侧输入命令
+一.索引
+参考连接：https://es.xiaoleilu.com/070_Index_Mgmt/00_Intro.html
+1.创建默认索引
+PUT 索引名
+2.删除索引
+DELETE 索引名
+3.自定义索引
+参考链接：
+PUT 索引名
+{
+   "mappings":{
+	"type名":{
+		"properties":{
+			"字段1":{
+				"type":"text",        #datatype,常用的有text、keyword、float、integer、date等等。
+				"analyzer":"english"  #指定分析器，有standard、english、ik_smart、ik_max_word				
+				},
+			字段2":{
+				"type":"keyword"      #keyword类型不需要分析器。
+				}			
+			}		
+		}	
+	}
+}
+text类型会经过分析器处理，分词、过滤、建立倒排序等，可以模糊匹配查询，得到匹配得分。
+keyword类型不需要分析器，只能准确查询。
+二.导入数据
+1.导入单个数据
+PUT 索引名/type名/id名
+{
+  "字段":"数据"
+}
+2.批量导入
+参考链接：https://es.xiaoleilu.com/030_Data/55_Bulk.html
+PUT _bulk
+{"index":{"_index":"索引名","_type":"type名","_id":"id名"}}
+{"字段名":"数据"}
+{"index":{"_index":"索引名","_type":"type名","_id":"id名"}}
+{"字段名":"数据"}
+{"index":{"_index":"索引名","_type":"type名","_id":"id名"}}
+{"字段名":"数据"}
+注:"_id"可以不写，如果不写，自动生成id。
+
+三.查询
+简易搜索：
+#在answer索引中，搜素Id是6227582的文档
+GET answer/_search?q=Id:6227582
+
+常用结构化查询
+参考链接：https://es.xiaoleilu.com/054_Query_DSL/55_Request_body_search.html
+https://es.xiaoleilu.com/080_Structured_Search/00_structuredsearch.html
+
+GET answer/_search
+{
+   "query":{
+	"match":{
+	  "字段":"数据"
+          }
+	}
+}
+
+
+
+
+
+python下使用
+参考链接：http://elasticsearch-py.readthedocs.io/en/master/
+
+from elasticsearch import Elasticsearch
+#建立连接 http_auth=(user,passwd)
+es = Elasticsearch(http_auth=('elastic', 'changeme'), timeout=10)
+  
+一.自定义索引
+index_mappings =
+{
+   "mappings":{
+	"type名":{
+		"properties":{
+			"字段1":{
+				"type":"text",        #datatype,常用的有text、keyword、float、integer、date等等。
+				"analyzer":"english"  #指定分析器，有standard、english、ik_smart、ik_max_word				
+				},
+			字段2":{
+				"type":"keyword"      #keyword类型不需要分析器。
+				}			
+			}		
+		}	
+	}
+}
+
+
+if es.indices.exists(index=INDEX_NAME) is not True:
+    es.indices.create(index=INDEX_NAME, body=index_mappings)
+
+二.批量导入数据
+参考：http://elasticsearch-py.readthedocs.io/en/master/api.html
+from elasticsearch import helpers
+使用helpers.bulk()
+
+三.查询
+_search_body = {
+        "query": {
+            "term": {
+                "ParentId": {
+                    "value": p_id
+                }
+            }
+        }
+    }
+
+searched = es.search(index=INDEX_NAME, doc_type=TYPE_NAME,
+                         body=_search_body)
+
+#返回查询结果
+result = []
+for hit in searched['hits']['hits']:
+    result.append(hit['_source'])
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+#删除所有容器
+docker rm `docker ps -a -q`  
+
+
+FROM ubuntu:16.04
+MAINTAINER Dean dmh@xiaogu-tech.com
+
+RUN apt-get update
+RUN apt-get install -y unzip
+RUN apt-get install -y wget
+RUN apt-get install -y python3.5
+RUN apt-get install -y python3-pip
+RUN apt-get install -y vim
+RUN apt-get install -y curl
+
+useradd -m cogik -s /bin/bash
+echo root:123456|chpasswd
+echo cogik:123456|chpasswd
+adduser cogik sudo
+echo "cogik ALL= (ALL) NOPASSWD:ALL">>/etc/sudoers
+
+ADD jdk-8u131-linux-x64.tar.gz /home 
+ADD elasticsearch-5.5.0.zip /home/co
+ADD elasticsearch-analysis-ik-5.5.0.zip /home
+ADD kibana-5.5.0-linux-x86_64.tar.gz /home
+
+RUN cd /home
+RUN unzip elasticsearch-5.5.0.zip
+RUN unzip -d ./ik elasticsearch-analysis-ik-5.5.0.zip
+
+RUN mkdir -p /usr/local/java
+RUN cp -r /home/jdk1.8.0_131/ /usr/local/java
+RUN echo "export JAVA_HOME=/usr/local/java/jdk1.8.0_131">>/etc/profile
+RUN echo "export PATH=$PATH:$HOME/bin:$JAVA_HOME/bin">>/etc/profile
+RUN source /etc/profile
+RUN echo "export JAVA_HOME=/usr/local/java/jdk1.8.0_131">>/home/.bashrc
+RUN echo "export PATH=$PATH:$HOME/bin:$JAVA_HOME/bin">>/home/.bashrc
+RUN echo "export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar">>/home/.bashrc
+RUN source /home/.bashrc
+
+RUN echo "elasticsearch.url: \"http://localhost:9200\" ">>/home/kibana-5.5.0-linux-x86_64/config/kibana.yml
+RUN /home/elasticsearch-5.5.0/bin/elasticsearch-plugin install x-pack
+RUN /home/kibana-5.5.0-linux-x86_64/bin/kibana-plugin install x-pack
+RUN cp -r /home/elasticsearch-analysis-ik-5.5.0  /home/elasticsearch-5.5.0/plugins/ik
+
+RUN pip3 install elasticsearch
+
+
+
+EXPOSE 80
+CMD ["bash"]
+
+
+
+

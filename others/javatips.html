@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>javatips</title>
+</head>
+
+<body>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="input" name="q" id="q" value="{{ query }}">
+        <input type="submit" name="search">
+    </form>
+    {{ question_list }}
+</body>
+</html>
