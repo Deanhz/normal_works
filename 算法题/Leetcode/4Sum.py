@@ -4,7 +4,8 @@ Created on Mon Apr 30 15:04:15 2018
 
 @author: Dean
 
-Given an array nums of n integers and an integer target, are there elements a, b, c, and d in nums such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.
+Given an array nums of n integers and an integer target, are there elements a, b, c, and d in nums such that a + b + c + d = target? 
+Find all unique quadruplets in the array which gives the sum of target.
 
 Note:
 

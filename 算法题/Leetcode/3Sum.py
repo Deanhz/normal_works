@@ -88,7 +88,7 @@ class Solution:
             r = n - 1
             while(l < r):
                 s = nums[i] + nums[l] + nums[r]
-                if s == 0:
+                if s == 0: # 只有找到目标后，才判断去重。
                     result.append([nums[i],nums[l],nums[r]])
                     while(l < r and nums[l] == nums[l+1]):
                         l += 1
