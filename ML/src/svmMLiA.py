@@ -225,7 +225,7 @@ def testRbf(k1=1.3):
 
 
 def test():
-    dataArr,labelArr=loadDataSet(r'd:/python34/ML/testSet_svm.txt')
+    dataArr,labelArr=loadDataSet(r'./testSet.txt')
     b,alphas=smoP(dataArr,labelArr,0.6,0.001,40)
     ws=calcWs(alphas,dataArr,labelArr)
     datMat=mat(dataArr)
@@ -234,7 +234,7 @@ def test():
     print(c)
 
 def plotSV():
-    dataArr,labelArr=loadDataSet(r'd:/python34/ML/testSetRBF.txt')
+    dataArr,labelArr=loadDataSet(r'./testSetRBF.txt')
     m,n=shape(dataArr)
     b,alphas=smoP(dataArr,labelArr,200,0.00001,10000,('rbf',0.5))
     datMat=mat(dataArr)
@@ -271,6 +271,7 @@ def plotSV():
 
 if __name__=='__main__':
     test()
+    plotSV()
    
 
 
